@@ -1,203 +1,268 @@
-# NDIS Digital-First Pricing Artefact Tools  
-*A modern, structured approach to analysing changes in the NDIS Support Catalogue*
+# NDIS Support Catalogue Comparison Tool
 
----
+A digital-first internal tool for the National Disability Insurance Agency (NDIA) Markets Delivery team to convert Support Catalogue Excel files to structured JSON and compare versions with detailed change detection.
 
-## 📘 Overview
+## 🎯 Purpose
 
-The **Digital-First Pricing Artefact Tools** project provides a clean, modern, NDIA-themed web interface for working with NDIS Support Catalogue data in a structured, machine-readable way.
+This tool addresses the limitations of static document-based pricing artefacts by:
+- Converting Excel catalogues to machine-readable JSON
+- Comparing catalogue versions with field-level change detection
+- Providing governance insights (e.g., items requiring review)
+- Demonstrating the value of digital-first pricing artefacts
 
-The platform includes:
-
-- A converter that transforms the **official Support Catalogue XLSX** into **validated, structured JSON**.
-- A comparison tool that analyses **version-to-version changes**, identifying:
-  - Added items  
-  - Removed items  
-  - Price limit changes by state  
-  - Claim type flag changes  
-  - Category shifts  
-- Export functionality for briefing packs:
-  - **Markdown report**  
-  - **JSON diff**  
-  - **PDF output**
-
-This tool is part of a broader strategic push toward **Digital-First Pricing Artefacts**, improving accuracy, discoverability and maintainability over traditional static PDFs.
-
----
-
-## 🚀 Features
-
-### 🔄 XLSX → JSON Conversion
-- Converts the official **Support Catalogue** Excel file into structured JSON.
-- Normalises:
-  - booleans (Yes/No → true/false)  
-  - price fields  
-  - date fields  
-- Ensures consistent schema across releases.
-- Designed for ingestion into dashboards, RAG/LMM systems, and validation pipelines.
-
-### 🆚 Version Comparison
-Upload two catalogue JSON files and instantly see:
-
-- **Items added**
-- **Items removed**
-- **Modified items**, including:
-  - Per-state price changes
-  - Claim type changes  
-- Summary metrics (added/removed/modified/unchanged counts)
-
-### 📊 Data Presentation
-- Paginated tables
-- Expandable sections for clarity
-- Sorted and labelled data for easy interpretation
-- Clean NDIA-aligned visual design
-
-### 📤 Export Capabilities
-- **Markdown report** for briefings  
-- **JSON representation** of all changes  
-- **PDF snapshot** for archival or external reference  
-
----
-
-## 🏛 Technical Architecture
-
-This project is built using:
-
-| Layer | Technology |
-|------|------------|
-| Frontend | Streamlit multipage app |
-| Styling | Custom NDIA theme (Inter font, NDIA Purple #6D3078 & Teal #009CA6) |
-| Processing | Python (pandas, openpyxl) |
-| PDF Generation | ReportLab (pure Python, Streamlit-Cloud-friendly) |
-| Deployment | Streamlit Cloud |
-
-No Docker is required for Streamlit Cloud deployment.
-
----
-
-## 📂 Repository Structure
+## 🏗️ Architecture
 
 ```
-digital-first-catalogue-tools/
-│
-├── streamlit_app.py                # Landing page
-├── ndis_theme.css                  # NDIA visual theme (safe version)
-├── requirements.txt                # Python dependencies
-│
-├── version_diff.py                 # Core diff logic
-├── xlsx_to_json.py                 # XLSX → JSON converter
-│
+streamlit-catalogue-comparison/
+├── streamlit_app.py              # Home page with navigation
 ├── pages/
-│   ├── 1_convert_xlsx.py           # Conversion UI
-│   └── 2_compare_versions.py       # Diff UI
-│
-└── README.md
+│   ├── 2_compare_versions.py     # Main workflow (upload → map → compare)
+│   └── 3_JSON_Conversion_Explainer.py  # Educational content
+├── xlsx_to_json.py               # Conversion engine
+├── version_diff.py               # Comparison logic
+├── ndis_theme.css                # NDIA purple branding
+├── requirements.txt              # Python dependencies
+├── Dockerfile                    # Container setup
+├── docker-compose.yml            # Compose configuration
+└── assets/                       # Diagrams for explainer page
 ```
 
----
+## 🚀 Quick Start
 
-## ⚙️ Installation (Local Development)
+### Option 1: Docker (Recommended)
 
-### 1. Clone the repository
+```bash
+# Build and run with Docker Compose
+docker-compose up --build
 
+# Access at http://localhost:8501
 ```
-git clone https://github.com/<your-account>/<your-repo>.git
-cd <your-repo>
-```
 
-### 2. Install dependencies
+### Option 2: Python Virtual Environment
 
-```
+```bash
+# Create virtual environment
+python3.11 -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install dependencies
 pip install -r requirements.txt
+
+# Run the app
+streamlit run streamlit_app.py
+
+# Access at http://localhost:8501
 ```
 
-### 3. Run the app
+## 📋 Features
 
+### 1. Robust Sheet Detection & Mapping
+- Lists all sheets in uploaded workbooks with row counts
+- User-driven sheet mapping (handles different naming conventions)
+- Preview functionality for selected sheets
+- Supports catalogues with or without legacy sheets
+
+### 2. Smart Excel → JSON Conversion
+- **Column mapping**: Automatically detects column variations
+  - "Item Number" vs "Support Item Number" → `item_number`
+  - "NSW" vs "New South Wales" → `price_limit_nsw`
+- **Data normalization**:
+  - Dates → YYYY-MM-DD format
+  - "Yes"/"No" → true/false
+  - Empty cells → null
+  - Prices → float numbers
+- **Validation**: Ensures every item has required fields
+
+### 3. Comprehensive Version Comparison
+Detects 7 types of changes:
+
+| Change Type | Description |
+|-------------|-------------|
+| **Added** | Present only in NEW Current |
+| **Removed** | Present in OLD Current, absent from NEW (governance risk) |
+| **Moved to Legacy** | Present in OLD Current, now in NEW Legacy |
+| **Legacy Removed** | Present in OLD Legacy, absent from NEW |
+| **Modified** | In both Current with field-level changes |
+| **Unchanged** | In both Current with no changes |
+| **Anomalies** | Unusual transitions requiring review |
+
+### 4. Field-Level Change Tracking
+For modified items, the tool shows:
+- Which specific fields changed (support_name, prices, dates, etc.)
+- Old value vs new value
+- Both table view and JSON format
+
+### 5. Professional UI
+- NDIA purple (#6D3078) branding
+- Accessible design
+- Wide layout for data tables
+- Clear tab navigation
+- Download buttons for JSON outputs
+
+## 📊 Usage Workflow
+
+1. **Upload Files**
+   - Upload OLD and NEW catalogue Excel files
+
+2. **Map Sheets**
+   - Use tabs to configure OLD and NEW catalogues separately
+   - Select Current sheet (required)
+   - Select Legacy sheet (optional)
+   - Preview selected sheets
+
+3. **Convert & Compare**
+   - Click "Convert to JSON and Run Comparison"
+   - View metadata for both catalogues
+   - Download JSON files
+
+4. **Analyze Results**
+   - Review summary metrics (added, removed, modified, etc.)
+   - Expand sections for detailed results
+   - Download modified items as JSON for further analysis
+
+## 🔧 Technical Details
+
+### Dependencies
+- **Python 3.11**
+- **Streamlit**: Web UI framework
+- **pandas**: Data manipulation
+- **openpyxl**: Excel file handling
+
+### JSON Schema
+```json
+{
+  "metadata": {
+    "source_filename": "...",
+    "generated_at": "YYYY-MM-DD HH:MM:SS",
+    "current": { "sheet": "...", "rows": 0 },
+    "legacy": { "sheet": "...", "rows": 0 }
+  },
+  "current_items": [
+    {
+      "item_number": "05_123456",
+      "support_name": "...",
+      "registration_group": "...",
+      "category": "...",
+      "unit": "...",
+      "claim_type": "...",
+      "price_limit_nsw": 0.0,
+      "price_limit_vic": 0.0,
+      "price_limit_qld": 0.0,
+      "price_limit_sa": 0.0,
+      "price_limit_wa": 0.0,
+      "price_limit_tas": 0.0,
+      "price_limit_nt": 0.0,
+      "price_limit_act": 0.0,
+      "effective_from": "YYYY-MM-DD",
+      "effective_to": "YYYY-MM-DD",
+      "notes": "...",
+      "raw_row_index": 0
+    }
+  ],
+  "legacy_items": [...]
+}
 ```
+
+### Comparison Output
+```json
+{
+  "added": [...],
+  "removed": [...],
+  "moved_to_legacy": [...],
+  "legacy_removed": [...],
+  "modified": [
+    {
+      "item_number": "05_123456",
+      "old": {...},
+      "new": {...},
+      "changes": {
+        "support_name": {
+          "old": "Old description",
+          "new": "New description"
+        }
+      }
+    }
+  ],
+  "unchanged": [...],
+  "anomalies": [...]
+}
+```
+
+## 🎨 NDIA Branding
+
+The tool uses official NDIA colors:
+- **Primary purple**: #6D3078
+- **Purple light**: #8B4A96
+- **Purple dark**: #4F2357
+- **Greys**: #F8F9FA, #E9ECEF, #495057, #212529
+
+All styling is defined in `ndis_theme.css`.
+
+## 📈 What This Enables
+
+Once pricing data is in JSON format:
+
+**For Markets Delivery:**
+- Version comparison dashboards
+- Automated validation of business rules
+- Trend analysis and reporting
+- Smart search and filtering
+
+**For ICT/Systems:**
+- API access to pricing data
+- Automated system updates
+- Data quality checks
+
+**For Service Providers:**
+- Direct API queries for pricing
+- Validation of claims against current pricing
+- Auto-updates in provider software
+
+**For Analytics:**
+- Real-time dashboards
+- Market analysis
+- Data visualizations
+
+## 🚢 Deployment
+
+### Local Development
+```bash
 streamlit run streamlit_app.py
 ```
 
-The app will launch at:
-
-```
-http://localhost:8501
-```
-
----
-
-## ☁️ Deployment (Streamlit Cloud)
-
-1. Push this repository to GitHub  
-2. Visit: https://streamlit.io/cloud  
-3. Select **“New app”**  
-4. Choose:
-   - Repo: *your repo*
-   - Main file: `streamlit_app.py`
-5. Click **Deploy**
-
-Streamlit Cloud will automatically:
-
-- install packages from `requirements.txt`
-- detect multipage structure
-- serve `ndis_theme.css`
-- build your environment
-
----
-
-## 📸 Screenshots (optional)
-
-(Add screenshots here once deployed.)
-
-```
-![Home Page](docs/homepage.png)
-![Comparison Tool](docs/comparison.png)
+### Docker Deployment
+```bash
+docker build -t ndis-catalogue-tool .
+docker run -p 8501:8501 ndis-catalogue-tool
 ```
 
----
+### Render.com / Cloud Deployment
+1. Push code to Git repository
+2. Connect to Render.com
+3. Configure as Docker service
+4. Set port to 8501
+5. Deploy
 
-## 🧪 Testing & Validation
+## 📝 Future Enhancements
 
-This app has been validated for:
+Potential additions for production:
+- [ ] Additional filters (e.g., "show only price changes")
+- [ ] Export to executive briefing formats
+- [ ] Integration with NDIA systems
+- [ ] Scheduled automated comparisons
+- [ ] Email alerts for anomalies
+- [ ] API endpoints for external access
+- [ ] Advanced anomaly detection
+- [ ] Historical trend analysis
 
-- Streamlit Cloud compatibility  
-- Modern browsers (Chrome, Edge, Safari)  
-- Large file uploads (up to Streamlit’s 200MB limit)  
-- JSON accuracy across version changes  
-- PDF generation consistency  
+## 🤝 Contributing
 
----
+This is an internal NDIA tool developed by Markets Delivery. For questions or suggestions, contact the digital transformation team.
 
-## 🛠 Extensibility
+## 📄 License
 
-Future enhancements may include:
-
-- **Visual change charts**
-- **Schema validation tooling**
-- **API endpoints for automated ingest**
-- **NDIA internal authentication layers**
-- **Integration with RAG or LLM-based assistants**
-
-If you'd like, I can generate a roadmap or development plan.
-
----
-
-## 👥 Contributors
-
-This tool is part of the NDIA’s forward-looking work on modernising the delivery of pricing artefacts and improving the discoverability and usability of structured pricing information.
+Internal NDIA use only.
 
 ---
 
-## 📄 Licence
-
-Choose an appropriate licence depending on your context:
-
-- **Internal NDIA:** *Proprietary – NDIA internal use only*  
-- **Public open-source:** MIT or Apache 2.0  
-
-You may add:
-
-```
-© National Disability Insurance Agency
-```
-
----
+**NDIS Support Catalogue Comparison Tool** · Markets Delivery · National Disability Insurance Agency

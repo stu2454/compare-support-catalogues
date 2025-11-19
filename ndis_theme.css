@@ -1,73 +1,235 @@
-/* ================================
-   NDIA THEME — SAFE v5
-   Typography + Colours ONLY
-   No layout overrides.
-================================== */
+/* NDIA Theme - Professional Purple Branding */
 
-/* Base font */
-html, body, [class*="css"] {
-    font-family: "Inter", sans-serif !important;
-    font-size: 15px !important;
-    color: #222 !important;
+:root {
+    --ndia-purple: #6D3078;
+    --ndia-purple-light: #8B4A96;
+    --ndia-purple-dark: #4F2357;
+    --grey-100: #F8F9FA;
+    --grey-200: #E9ECEF;
+    --grey-300: #DEE2E6;
+    --grey-700: #495057;
+    --grey-900: #212529;
 }
 
-/* Main title */
-.nids-main-title {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #6D3078;
-    margin-bottom: 0.3rem;
+/* Global styles */
+.main {
+    background-color: var(--grey-100);
 }
 
-/* Subtitle */
-.nids-subtitle {
-    font-size: 1rem;
-    color: #666;
+/* Headers */
+h1, h2, h3 {
+    color: var(--ndia-purple);
+    font-weight: 600;
+}
+
+h1 {
+    border-bottom: 3px solid var(--ndia-purple);
+    padding-bottom: 0.5rem;
     margin-bottom: 1.5rem;
 }
 
-/* Section headers */
-.nids-section-header {
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: #6D3078;
-    padding-left: 0.75rem;
-    border-left: 6px solid #009CA6;
-    margin: 1.2rem 0 0.7rem 0;
+/* Navigation cards on home page */
+.nav-card {
+    background: white;
+    border-left: 4px solid var(--ndia-purple);
+    padding: 1.5rem;
+    margin: 1rem 0;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
-/* Expander header */
-.streamlit-expanderHeader {
-    font-size: 1.1rem !important;
-    font-weight: 600 !important;
-    color: #6D3078 !important;
+.nav-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.nav-card h3 {
+    margin-top: 0;
+    color: var(--ndia-purple);
+}
+
+/* Tabs styling - make them prominent */
+.stTabs [data-baseweb="tab-list"] {
+    gap: 8px;
+    background-color: var(--grey-200);
+    padding: 0.5rem;
+    border-radius: 8px;
+}
+
+.stTabs [data-baseweb="tab"] {
+    height: 50px;
+    background-color: white;
+    border-radius: 4px;
+    padding: 0 2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--grey-700);
+    border: 2px solid transparent;
+}
+
+.stTabs [aria-selected="true"] {
+    background-color: var(--ndia-purple);
+    color: white;
+    border-bottom: 4px solid var(--ndia-purple-dark);
 }
 
 /* Buttons */
-.stButton>button {
-    background-color: #009CA6 !important;
-    color: white !important;
-    border: none !important;
-    border-radius: 6px !important;
-    font-weight: 600 !important;
-    padding: 0.5rem 1rem !important;
+.stButton > button {
+    background-color: var(--ndia-purple);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0.5rem 1.5rem;
+    font-weight: 600;
+    transition: background-color 0.2s;
 }
 
-.stButton>button:hover {
-    background-color: #007f89 !important;
+.stButton > button:hover {
+    background-color: var(--ndia-purple-dark);
 }
 
-/* Dataframe sizing */
+.stDownloadButton > button {
+    background-color: var(--ndia-purple-light);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0.5rem 1.5rem;
+    font-weight: 600;
+}
+
+.stDownloadButton > button:hover {
+    background-color: var(--ndia-purple);
+}
+
+/* File uploader */
+.uploadedFile {
+    background-color: white;
+    border: 2px solid var(--ndia-purple);
+    border-radius: 4px;
+    padding: 0.5rem;
+}
+
+/* Success/Info/Warning boxes */
+.stAlert {
+    border-radius: 4px;
+}
+
+/* Expanders */
+.streamlit-expanderHeader {
+    background-color: white;
+    border-left: 4px solid var(--ndia-purple);
+    font-weight: 600;
+    color: var(--ndia-purple);
+}
+
+/* Dataframe styling */
 .dataframe {
-    font-size: 0.95rem !important;
+    font-size: 0.9rem;
 }
 
-/* Cards — purely decorative */
-.nids-card {
-    background: #FFFFFF;
-    padding: 1rem 1.2rem;
-    border: 1px solid #E5E7EB;
-    border-radius: 12px;
+/* Metrics */
+.stMetric {
+    background-color: white;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.stMetric label {
+    color: var(--grey-700);
+    font-weight: 600;
+}
+
+.stMetric [data-testid="stMetricValue"] {
+    color: var(--ndia-purple);
+}
+
+/* Image cards for explainer page */
+.image-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin: 1.5rem 0;
+    border-top: 4px solid var(--ndia-purple);
+}
+
+.image-card img {
+    border-radius: 4px;
     margin: 1rem 0;
-    box-shadow: 0px 1px 3px rgba(0,0,0,0.05);
+}
+
+.image-caption {
+    color: var(--grey-700);
+    font-style: italic;
+    text-align: center;
+    margin-top: 0.5rem;
+}
+
+/* Section dividers */
+hr {
+    border: none;
+    border-top: 2px solid var(--grey-300);
+    margin: 2rem 0;
+}
+
+/* Code blocks */
+code {
+    background-color: var(--grey-200);
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    color: var(--ndia-purple-dark);
+    font-size: 0.9em;
+}
+
+/* Sidebar */
+.css-1d391kg {
+    background-color: var(--grey-100);
+}
+
+/* Status badges */
+.status-added {
+    background-color: #28a745;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.status-removed {
+    background-color: #dc3545;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.status-modified {
+    background-color: #ffc107;
+    color: #212529;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.status-legacy {
+    background-color: #6c757d;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.status-anomaly {
+    background-color: #e83e8c;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
 }
