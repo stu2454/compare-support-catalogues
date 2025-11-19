@@ -177,7 +177,7 @@ Once pricing information is in JSON format, we can build powerful tools on top o
 - 🔍 **Smart search**: Find items by category, registration group, or price range
 - 📝 **Impact reports**: Generate executive summaries showing what changed and why it matters
 
-### For ACTU / Policy Teams:
+### For Policy Teams:
 - 🔬 **Business rule testing**: Ensure new catalogues comply with policy requirements
 - 📋 **Audit trails**: Track the history of every support item
 - 🎯 **Consistency checks**: Verify that PAPL documents align with catalogue data
