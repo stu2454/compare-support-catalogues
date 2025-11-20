@@ -55,7 +55,7 @@ Right now, the key NDIS pricing artefacts exist as:
 - 🔄 **Hard to compare**: Detecting changes between versions requires manual diff'ing
 - 🧮 **Hard to validate**: No automated checks for business rules or data quality
 - 📊 **Hard to analyze**: Can't easily generate reports or dashboards
-- 🤝 **Inconsistent interpretation**: Different teams (Markets, ACTU, ICT, Analytics) re-interpret the same data differently
+- 🤝 **Inconsistent interpretation**: Different teams (Markets, Policy, ICT, Analytics) re-interpret the same data differently
 
 **For service providers & software vendors:**
 - 🔌 **No API access**: Can't programmatically query pricing information
