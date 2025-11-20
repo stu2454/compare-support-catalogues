@@ -16,15 +16,23 @@ This tool addresses the limitations of static document-based pricing artefacts b
 streamlit-catalogue-comparison/
 ├── streamlit_app.py              # Home page with navigation
 ├── pages/
-│   ├── 2_compare_versions.py     # Main workflow (upload → map → compare)
-│   └── 3_JSON_Conversion_Explainer.py  # Educational content
+│   ├── 1_Compare_Versions.py     # Main workflow (upload → map → compare)
+│   └── 2_JSON_Explainer.py       # Educational explainer
 ├── xlsx_to_json.py               # Conversion engine
 ├── version_diff.py               # Comparison logic
 ├── ndis_theme.css                # NDIA purple branding
+├── test_tool.py                  # Test suite with mock data
 ├── requirements.txt              # Python dependencies
 ├── Dockerfile                    # Container setup
 ├── docker-compose.yml            # Compose configuration
+├── README.md                     # This file
+├── QUICKSTART.md                 # Quick start guide
+├── PROJECT_SUMMARY.md            # Project overview
 └── assets/                       # Diagrams for explainer page
+    ├── transformation_of_artefacts.png
+    ├── why_JSON_matters.png
+    ├── static_structured_stewardship.png
+    └── xlsx2json_image.png
 ```
 
 ## 🚀 Quick Start
